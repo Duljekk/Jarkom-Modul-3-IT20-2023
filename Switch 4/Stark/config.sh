@@ -1,6 +1,3 @@
-ip a
-# harsunya ip inetnya masih statis -> 192.243.4.4
-
 echo '
 # auto eth0
 # iface eth0 inet static
@@ -12,8 +9,3 @@ auto eth0
 iface eth0 inet dhcp' > /etc/network/interfaces
 
 # restart node 
-
-# TESTING ->
-cat /etc/resolv.conf
-ip a
-#harusnya ke ganti ke range yang ditentuin
