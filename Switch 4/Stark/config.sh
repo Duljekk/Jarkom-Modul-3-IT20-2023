@@ -1,5 +1,3 @@
-# echo nameserver 192.168.122.1 > /etc/resolv.conf
-
 ip a
 # harsunya ip inetnya masih statis -> 192.243.4.4
 
