@@ -46,6 +46,7 @@ $TTL    604800
 ;
 @       IN      NS      granz.channel.it20.com.
 @       IN      A       192.243.3.6   ; IP Lugner
+@       IN      A       192.243.2.2   ; IP Denken (Database Server)
 www     IN      CNAME   granz.channel.it20.com.' > /etc/bind/jarkom/granz.channel.it20.com
 
 service bind9 restart
