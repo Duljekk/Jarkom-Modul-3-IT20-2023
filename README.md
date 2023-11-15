@@ -3,4 +3,5 @@
 Default .bashrc (buat semua)
 
 bash /root/setup.sh
+
 bash /root/config.sh

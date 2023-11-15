@@ -3,7 +3,6 @@
 ip a
 # harsunya ip inetnya masih statis -> 192.243.3.2
 
-
 echo '
 # auto eth0
 # iface eth0 inet static
@@ -15,9 +14,7 @@ echo '
 auto eth0
 iface eth0 inet dhcp' > /etc/network/interfaces
 
-
 # restart node revolte
-
 
 # TESTING ->
 cat /etc/resolv.conf
