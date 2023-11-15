@@ -33,6 +33,7 @@ www     IN      CNAME   riegel.canyon.it20.com.' > /etc/bind/jarkom/riegel.canyo
 cp /etc/bind/db.local /etc/bind/jarkom/granz.channel.it20.com.
 
 echo '
+;
 ; BIND data file for local loopback interface
 ;
 $TTL    604800
@@ -41,15 +42,10 @@ $TTL    604800
                          604800         ; Refresh
                           86400         ; Retry
                         2419200         ; Expire
-                         60# Heiter -> DNS Server 
-
-echo nameserver 192.168.122.1 > /etc/resolv.conf
-
-apt-get update 
-apt-get install bind9 -y800 )       ; Negative Cache TTL
+                         604800 )       ; Negative Cache TTL
 ;
 @       IN      NS      granz.channel.it20.com.
 @       IN      A       192.243.3.6   ; IP Lugner
-www     IN      CNAME   granz.channel.it20.com.' > /etc/bind/jarkom/granz.channel.it20.com.
+www     IN      CNAME   granz.channel.it20.com.' > /etc/bind/jarkom/granz.channel.it20.com
 
 service bind9 restart
