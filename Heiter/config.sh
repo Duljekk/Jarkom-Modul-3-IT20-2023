@@ -33,7 +33,7 @@ $TTL    604800
                          604800 )       ; Negative Cache TTL
 ;
 @       IN      NS      riegel.canyon.it20.com.
-@       IN      A       192.243.2.3     ; IP Eisen
+@       IN      A       192.243.2.2     ; IP Eisen (Load Balancer)
 www     IN      CNAME   riegel.canyon.it20.com.' > /etc/bind/jarkom/riegel.canyon.it20.com
 
 rm /etc/bind/jarkom/granz.channel.it20.com
