@@ -1,4 +1,4 @@
-echo 'INTERFACES="eth0"' > /etc/default/isc-dhcp-server
+echo 'INTERFACESv4="eth0"' > /etc/default/isc-dhcp-server
 
 echo '
 subnet '192.243.1.0' netmask '255.255.255.0' {
@@ -23,8 +23,7 @@ subnet '192.243.4.0' netmask '255.255.255.0' {
     option domain-name-servers '192.243.1.3';
     default-lease-time '720';
     max-lease-time '5760';
-}
- ' > /etc/dhcp/dhcpd.conf
+}' > /etc/dhcp/dhcpd.conf
 
 # TESTING ->
 service isc-dhcp-server restart
