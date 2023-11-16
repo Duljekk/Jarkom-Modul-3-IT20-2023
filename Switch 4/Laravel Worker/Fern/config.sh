@@ -76,7 +76,7 @@ php artisan storage:link
 echo '
 server {
 
-    listen 8003;
+    listen 8001;
 
     root /var/www/laravel-praktikum-jarkom/public;
 
@@ -108,4 +108,4 @@ chown -R www-data.www-data /var/www/laravel-praktikum-jarkom/
 service nginx restart
 service php8.0-fpm start
 
-lynx localhost:8003
+lynx localhost:8001
