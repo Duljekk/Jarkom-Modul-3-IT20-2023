@@ -258,13 +258,138 @@ Dan juga pada file ```/etc/mysql/mariadb.conf.d/50-server.cnf```
 bind-address            = 0.0.0.0
 ```
 ### 6. Lakukan Testing pada Worker
-Setelah semua konfigurasi selesai, kita dapat melakukan testing pada salah satu worker, disini kami menggunakan Worker Fern yang memiliki IP Address **192.243.4.1** dengan menggunakan command berikut
+Setelah semua konfigurasi selesai, kita dapat melakukan testing pada salah satu worker, disini kami menggunakan Worker Fern yang memiliki IP Address **192.243.4.1** dengan menginstallasi package mariadb-client dan menggunakan command berikut
+```bash
+apt-get install mariadb-client -y
+```
 ```bash
 mariadb --host=192.243.2.1 --port=3306 --user=kelompokit20 --password=passwordit20 dbkelompokit20
 ```
 Hasilnya adalah Worker Fern berhasil mengakses Database
 
 ## Soal 14
+Frieren, Flamme, dan Fern memiliki Riegel Channel sesuai dengan quest guide berikut. Jangan lupa melakukan instalasi PHP8.0 dan Composer
+
+Di nomor 14 ini kita akan melakukan installasi aplikasi Laravel pada ketiga worker Laravel. Aplikasikan langkah-langkah dibawah ini di ketiga worker.
+
+### 1. Koneksi ke DNS Server
+Tambahkan IP Heiter di resolv.conf Denken
+
+```bash
+echo 'nameserver 192.243.1.2' > etc/resolv.conf
+```
+
+### 2. Installasi Package yang diperlukan
+Ada beberapa package yang diperlukan untuk mengerjakan nomor 14 ini. Berikut adalah script untuk menginstall dan menjalankan package-package tersebut
+```bash
+apt-get update
+
+# Lynx, Engine X
+apt-get install lynx -y
+apt-get install nginx -y
+
+# PHP 8.0
+apt-get install -y lsb-release ca-certificates apt-transport-https software-properties-common gnupg2
+curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg
+sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
+
+apt-get update
+apt-get install php8.0-mbstring php8.0-xml php8.0-cli php8.0-common php8.0-intl php8.0-opcache php8.0-readline php8.0-mysql php8.0-fpm php8.0-curl unzip wget -y
+php --version
+
+service nginx start
+service php8.0-fpm start
+
+# Composer
+wget https://getcomposer.org/download/2.0.13/composer.phar
+chmod +x composer.phar
+mv composer.phar /usr/bin/composer
+composer -V
+
+# Git
+apt-get install git -y
+```
+### 3. Cloning aplikasi Laravel
+Selanjutnya kita akan melakukan *git clone* pada aplikasi Laravel yang akan kita gunakan. 
+```bash
+git clone https://github.com/martuafernando/laravel-praktikum-jarkom.git
+```
+Pindahkan hasil clone tersebut kedalam folder ```/var/www/laravel-praktikum-jarkom```
+```bash
+mv laravel-praktikum-jarkom /var/www/laravel-praktikum-jarkom
+```
+### 4. Konfigurasi aplikasi Laravel
+Sebelum mulai melakukan konfigurasi, kita terlebih dahulu perlu menginstall modul yang ada pada aplikasi Laravel kita menggunakan composer
+```bash
+cd /var/www/laravel-praktikum-jarkom
+composer update
+composer install
+```
+Setelah itu, rename file ```.env.example``` menjadi ```.env```, dan lakukan konfigurasi sebagai berikut
+```bash
+DB_CONNECTION=mysql
+DB_HOST=192.243.2.1
+DB_PORT=3306
+DB_DATABASE=dbkelompokit20
+DB_USERNAME=kelompokit20
+DB_PASSWORD=passwordit20
+```
+Konfigurasi tersebut akan menghubungkan aplikasi dengan database yang sudah dibuat sebelumnya. Setelah itu, eksekusi command Laravel berikut
+```bash
+php artisan migrate:fresh
+php artisan db:seed --class=AiringsTableSeeder
+php artisan key:generate
+php artisan jwt:secret
+php artisan storage:link
+```
+Kita juga perlu melakukan konfigurasi nginx, lakukan konfigurasi seperti dibawah ini pada file ```/etc/nginx/sites-available/laravel-worker```
+```nginx
+server {
+
+    listen 8001; # Ubah sesuai worker
+
+    root /var/www/laravel-praktikum-jarkom/public;
+
+    index index.php index.html index.htm;
+    server_name _;
+
+    location / {
+            try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    # pass PHP scripts to FastCGI server
+    location ~ \.php$ {
+    include snippets/fastcgi-php.conf;
+    fastcgi_pass unix:/var/run/php/php8.0-fpm.sock;
+    }
+
+location ~ /\.ht {
+            deny all;
+    }
+
+    error_log /var/log/nginx/laravel-worker_error.log;
+    access_log /var/log/nginx/laravel-worker_access.log;
+}
+```
+Kemudian lakukan symlink dan kelola akses izin
+```bash
+ln -s /etc/nginx/sites-available/laravel-worker /etc/nginx/sites-enabled/
+chown -R www-data.www-data /var/www/laravel-praktikum-jarkom/
+```
+Jangan lupa untuk melakukan restart pada nginx dan PHP 8.0
+```bash
+service nginx restart
+service php8.0-fpm start
+```
+### 5. Testing aplikasi
+Untuk melakukan testing kita dapat menggunakan **lynx localhost:[port]** sesuai dengan Worker yang kita gunakan. Disini kami akan melakukan testing pada worker Fern dengan port 8001
+```bash
+lynx localhost:8001
+```
+Jika sudah berhasil, akan tampil tampilan berikut
+
+
+
 
 
 Default .bashrc (buat semua)
