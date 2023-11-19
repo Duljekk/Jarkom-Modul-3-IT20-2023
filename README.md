@@ -569,14 +569,12 @@ php_admin_flag[allow_url_fopen] = off
 
 ; Choose how the process manager will control the number of child processes.
 
-pm = dynamic
+pm = dynamic```
 pm.max_children = 25
 pm.start_servers = 5
 pm.min_spare_servers = 5
 pm.max_spare_servers = 10
-```
-Jangan lupa untuk melakukan konfigurasi script tersebut di semua worker, dan jangan lupa juga untuk melakukan restart pada service PHP-FPM
-```bash
+```pada
 service php8.0-fpm restart
 ```
 Untuk command testing nya masih sama dengan nomor sebelumnya
@@ -586,6 +584,34 @@ ab -n 100 -c 10 -p credentials.json -T application/json http://riegel.canyon.it2
 
 ## Soal 20
 Nampaknya hanya menggunakan PHP-FPM tidak cukup untuk meningkatkan performa dari worker maka implementasikan Least-Conn pada Eisen. Untuk testing kinerja dari worker tersebut dilakukan sebanyak 100 request dengan 10 request/second.
+
+Untuk mengubah algoritma yang digunakan oleh Load Balancer kita perlu melakukan konfigurasi ulang nginx di Eisen. Lebih tepatnya di file ```/etc/nginx/sites-available/laravel-worker``` yang sudah kita buat sebelumnya
+
+```nginx
+upstream worker {
+    least_conn; # Least Connection
+    # least_time; # Least Time
+    # ip_hash; # IP Hash
+    server 192.243.4.1:8001;
+    server 192.243.4.2:8002;
+    server 192.243.4.3:8003;
+}
+
+server {
+    listen 80;
+    server_name riegel.canyon.it20.com www.riegel.canyon.it20.com;
+
+    location / {
+        proxy_pass http://worker;
+    }
+}
+```
+Save kemudian restart nginx dan lakukan testing menggunakan command sebelum-sebelumnya
+```bash
+service nginx restart
+ab -n 100 -c 10 -p credentials.json -T application/json http://riegel.canyon.it20.com/api/auth/login
+```
+
 
 Default .bashrc (buat semua)
 
