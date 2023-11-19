@@ -516,6 +516,74 @@ Untuk meningkatkan performa dari Worker, coba implementasikan PHP-FPM pada Frier
 - pm.max_spare_servers
 sebanyak tiga percobaan dan lakukan testing sebanyak 100 request dengan 10 request/second kemudian berikan hasil analisisnya pada Grimoire.
 
+Pada soal 19 ini kita akan melakukan modifikasi pada parameter-parameter PHP-FPM yang berada di worker. Parameter-parameter tersebut dapat ditemukan di file ```/etc/php/8.0/fpm/pool.d/www.conf```, berikut adalah script dan parameter yang kami gunakan
+
+- ### Script 1
+```conf
+[www]
+user = www-data
+group = www-data
+listen = /run/php/php8.0-fpm.sock
+listen.owner = www-data
+listen.group = www-data
+php_admin_value[disable_functions] = exec,passthru,shell_exec,system
+php_admin_flag[allow_url_fopen] = off
+
+; Choose how the process manager will control the number of child processes.
+
+pm = dynamic
+pm.max_children = 3
+pm.start_servers = 1
+pm.min_spare_servers = 1
+pm.max_spare_servers = 3
+```
+- ### Script 2
+```conf
+[www]
+user = www-data
+group = www-data
+listen = /run/php/php8.0-fpm.sock
+listen.owner = www-data
+listen.group = www-data
+php_admin_value[disable_functions] = exec,passthru,shell_exec,system
+php_admin_flag[allow_url_fopen] = off
+
+; Choose how the process manager will control the number of child processes.
+
+pm = dynamic
+pm.max_children = 15
+pm.start_servers = 3
+pm.min_spare_servers = 3
+pm.max_spare_servers = 5
+```
+- ### Script 3
+```conf
+[www]
+user = www-data
+group = www-data
+listen = /run/php/php8.0-fpm.sock
+listen.owner = www-data
+listen.group = www-data
+php_admin_value[disable_functions] = exec,passthru,shell_exec,system
+php_admin_flag[allow_url_fopen] = off
+
+; Choose how the process manager will control the number of child processes.
+
+pm = dynamic
+pm.max_children = 25
+pm.start_servers = 5
+pm.min_spare_servers = 5
+pm.max_spare_servers = 10
+```
+Jangan lupa untuk melakukan konfigurasi script tersebut di semua worker, dan jangan lupa juga untuk melakukan restart pada service PHP-FPM
+```bash
+service php8.0-fpm restart
+```
+Untuk command testing nya masih sama dengan nomor sebelumnya
+```bash
+ab -n 100 -c 10 -p credentials.json -T application/json http://riegel.canyon.it20.com/api/auth/login
+```
+
 ## Soal 20
 Nampaknya hanya menggunakan PHP-FPM tidak cukup untuk meningkatkan performa dari worker maka implementasikan Least-Conn pada Eisen. Untuk testing kinerja dari worker tersebut dilakukan sebanyak 100 request dengan 10 request/second.
 
