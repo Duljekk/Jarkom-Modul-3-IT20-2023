@@ -179,10 +179,7 @@ Setelah mengalahkan Demon King, perjalanan berlanjut. Kali ini, kalian diminta u
         ;
         $TTL    604800
         @       IN      SOA     granz.channel.it20.com. root.granz.channel.it20.com. (
-                                2023101001      ; Serial
-                                 604800         ; Refresh
-                                  86400         ; Retry
-                                2419200         ; Expire
+                                2023101001      ; Serial0-1
                                  604800 )       ; Negative Cache TTL
         ;
         @       IN      NS      granz.channel.it20.com.
@@ -203,8 +200,71 @@ Setelah mengalahkan Demon King, perjalanan berlanjut. Kali ini, kalian diminta u
 
 
 
+## Soal 13
 
+#### Karena para petualang kehabisan uang, mereka kembali bekerja untuk mengatur riegel.canyon.yyy.com.
 
+Semua data yang diperlukan, diatur pada Denken dan harus dapat diakses oleh Frieren, Flamme, dan Fern.
+
+Pada soal nomor 13 ini kita perlu untuk mensetup Database Server (Node Denken) yang kemudian database tersebut perlu dapat diakses di node Frieren, Flamme, dan Fern.
+
+### 1. Menyambungkan Node Denken sudah tersambung ke DNS Server
+
+Langkah yang paling awal setelah kita menjalankan Node Denken adalah kita perlu menyambungkan nya dengan DNS Server. Tambahkan IP Heiter di resolv.conf Denken
+
+```bash
+echo 'nameserver 192.243.1.2' > etc/resolv.conf
+```
+### 2. Installasi package MariaDB
+Di soal ini kita memerlukan service mariadb-server karena node ini akan digunakan sebagai database server. Install package mariadb-server, jangan lupa untuk lakukan update terlebih dahulu
+
+```bash
+apt-get update
+apt-get install mariadb-server -y
+service mysql start
+```
+Jalankan service mysql dengan script berikut
+```bash
+service mysql start
+```
+### 3. Masuk ke dalam service mySQL
+Sebelum memasukkan command sql kita perlu terlebih dahulu login ke dalam mysql, eksekusi command berikut ini
+```bash
+mysql -u root -p
+```
+Untuk password defaultnya adalah : **root**     
+
+Disini kita sudah berhasil untuk login sebagai user root pada service mysql
+
+### 4. Lakukan Konfigurasi mySQL
+Konfigurasikan mySQL untuk aplikasi Laravel yang akan digunakan dengan mengeksekusi query berikut
+```sql
+CREATE USER 'kelompokit20'@'%' IDENTIFIED BY 'passwordit20';
+CREATE USER 'kelompokit20'@'localhost' IDENTIFIED BY 'passwordit20';
+CREATE DATABASE dbkelompokit20;
+GRANT ALL PRIVILEGES ON *.* TO 'kelompokit20'@'%';
+GRANT ALL PRIVILEGES ON *.* TO 'kelompokit20'@'localhost';
+FLUSH PRIVILEGES;
+```
+### 5. Lakukan Konfigurasi untuk koneksi ke Worker
+Karena database perlu dapat diakses oleh Laravel Worker, ubah script pada ```/etc/mysql/my.cnf```
+```bash
+[mysqld]
+skip-networking=0
+skip-bind-address
+```
+Dan juga pada file ```/etc/mysql/mariadb.conf.d/50-server.cnf```
+```bash
+bind-address            = 0.0.0.0
+```
+### 6. Lakukan Testing pada Worker
+Setelah semua konfigurasi selesai, kita dapat melakukan testing pada salah satu worker, disini kami menggunakan Worker Fern yang memiliki IP Address **192.243.4.1** dengan menggunakan command berikut
+```bash
+mariadb --host=192.243.2.1 --port=3306 --user=kelompokit20 --password=passwordit20 dbkelompokit20
+```
+Hasilnya adalah Worker Fern berhasil mengakses Database
+
+## Soal 14
 
 
 Default .bashrc (buat semua)
