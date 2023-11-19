@@ -388,6 +388,63 @@ lynx localhost:8001
 ```
 Jika sudah berhasil, akan tampil tampilan berikut
 
+## Soal 15 - 17
+Pada 3 soal ini kita akan melakukan benchmarking pada client untuk aplikasi Laravel yang sudah kita buat sebelumnya
+
+Riegel Channel memiliki beberapa endpoint yang harus ditesting sebanyak 100 request dengan 10 request/second. Tambahkan response dan hasil testing pada grimoire. 
+
+Sebelum melakukan testing, pastikan client sudah terhubung ke DNS Server
+```bash
+echo 'nameserver 192.243.1.2' > etc/resolv.conf
+```
+Lakukan installasi juga untuk package yang diperlukan untuk benchmarking seperti Apache Benchmark dan Htop
+```bash
+apt-get update
+apt-get install lynx -y
+apt-get install htop -y
+apt-get install apache2-utils -y
+apt-get install jq -y
+```
+Untuk testing, kami disini menggunakan client Stark dan worker Fern
+### 15. POST /auth/register
+Pada nomor 15 kami membuat file JSON yang berisi kredensial username dan password untuk benchmarking ini yang diberi nama ```credentials.json```
+```json
+{
+  "username": "kelompokit20",
+  "password": "passwordit20"
+}
+```
+Untuk testingnya menggunakan command berikut
+```bash
+ab -n 100 -c 10 -p credentials.json -T application/json http://192.243.4.1:8001/api/auth/register
+```
+
+### 16. POST /auth/login
+Nomor ini juga menggunakan ```credentials.json``` yang dibuat sebelumnya, hanya endpoint api nya saja yang dirubah
+```bash
+ab -n 100 -c 10 -p credentials.json -T application/json http://192.243.4.1:8001/api/auth/login
+```
+### 17. GET /me
+Untuk endpoint ini kita perlu untuk menggunakan bearer token, yang didapat dengan melakukan request POST ke endpoint di nomor sebelumnya
+```bash
+curl -X POST -H "Content-Type: application/json" -d @credentials.json http://192.243.4.1:8001/api/auth/login > output.txt
+```
+Response dari request tersebut akan disimpan di output.txt, jika berhasil maka akan tampil token yang akan kita gunakan. Perlu diperhatikan jika terjadi kegagalan ada kemungkinan server menerima terlalu banyak request sehingga kita perlu tunggu dulu beberapa saat.
+
+Selanjutnya, masukkan token ke variabel global dengan jq
+```bash
+token=$(cat output.txt | jq -r '.token')
+```
+Kemudian jalankan command testing dibawah ini
+```bash
+ab -n 100 -c 10 -H "Authorization: Bearer $token" http://192.243.4.1:8001/api/me
+```
+
+
+- POST /auth/login **(16)**
+- GET /me **(17)**
+
+
 
 
 
