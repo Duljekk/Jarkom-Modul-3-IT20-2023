@@ -440,14 +440,84 @@ Kemudian jalankan command testing dibawah ini
 ab -n 100 -c 10 -H "Authorization: Bearer $token" http://192.243.4.1:8001/api/me
 ```
 
+## Soal 18
+Untuk memastikan ketiganya bekerja sama secara adil untuk mengatur Riegel Channel maka implementasikan Proxy Bind pada Eisen untuk mengaitkan IP dari Frieren, Flamme, dan Fern.
 
-- POST /auth/login **(16)**
-- GET /me **(17)**
+Untuk mengimplementasikan proxy bind pada node Load Balancer (Eisen), kita dapat melakukan langkah-langkah berikut
 
+### 1. Koneksi ke DNS Server
+Tambahkan IP Heiter di resolv.conf Eisen
 
+```bash
+echo 'nameserver 192.243.1.2' > etc/resolv.conf
+```
+### 2. Konfigurasi ulang Bind di Heiter
+Subdomain *riegel.canyon.it20.com* perlu diarahkan ke IP Address Load Balancer (Eisen), sehingga kita perlu melakukan konfigurasi ulang pada file ```/etc/bind/jarkom/riegel.canyon.it20.com``` di DNS Server (Heiter)
+```bind
+;
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     riegel.canyon.it20.com. root.riegel.canyon.it20.com. (
+                        2023101001      ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      riegel.canyon.it20.com.
+@       IN      A       192.243.2.1     ; IP Eisen (Load Balancer)
+www     IN      CNAME   riegel.canyon.it20.com.
+```
 
+### 3. Konfigurasi Nginx di Load Balancer
+Jangan lupa untuk melakukan installasi package nginx terlebih dahulu
+```bash
+apt-get update
+apt-get install nginx
+```
+Setelah nginx terinstall, lakukan konfigurasi pada file ```/etc/nginx/sites-available/laravel-worker```
 
+```nginx
+upstream worker {
+    server 192.243.4.1:8001;
+    server 192.243.4.2:8002;
+    server 192.243.4.3:8003;
+}
+server {
+    listen 80;
+    server_name riegel.canyon.it20.com www.riegel.canyon.it20.com;
 
+    location / {
+        proxy_pass http://worker;
+    }
+}
+```
+Seperti biasa, setelah itu kita akan lakukan symlink kemudian me-restart nginx
+
+```bash
+ln -s /etc/nginx/sites-available/laravel-worker /etc/nginx/sites-enabled/laravel-worker
+
+service nginx restart
+```
+
+### 4. Testing
+Untuk melakukan testing kita dapat mengeksekusi command berikut
+```bash
+ab -n 100 -c 10 -p credentials.json -T application/json http://riegel.canyon.it20.com/api/auth/login
+```
+Bisa dilihat kembali untuk command testing nya tidak lagi menggunakan **ip:port** melainkan **subdomain** yang sudah diarahkan ke Load Balancer
+
+## Soal 19
+Untuk meningkatkan performa dari Worker, coba implementasikan PHP-FPM pada Frieren, Flamme, dan Fern. Untuk testing kinerja naikkan 
+- pm.max_children
+- pm.start_servers
+- pm.min_spare_servers
+- pm.max_spare_servers
+sebanyak tiga percobaan dan lakukan testing sebanyak 100 request dengan 10 request/second kemudian berikan hasil analisisnya pada Grimoire.
+
+## Soal 20
+Nampaknya hanya menggunakan PHP-FPM tidak cukup untuk meningkatkan performa dari worker maka implementasikan Least-Conn pada Eisen. Untuk testing kinerja dari worker tersebut dilakukan sebanyak 100 request dengan 10 request/second.
 
 Default .bashrc (buat semua)
 
