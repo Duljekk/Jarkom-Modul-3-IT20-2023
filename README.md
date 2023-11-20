@@ -915,6 +915,7 @@ DB_USERNAME=kelompokit20
 DB_PASSWORD=passwordit20
 ```
 ![Alt text](<Screenshot from 2023-11-20 14-02-55.png>)
+
 Konfigurasi tersebut akan menghubungkan aplikasi dengan database yang sudah dibuat sebelumnya. Setelah itu, eksekusi command Laravel berikut
 ```bash
 php artisan migrate:fresh
@@ -1001,14 +1002,15 @@ Untuk testingnya menggunakan command berikut
 ```bash
 ab -n 100 -c 10 -p credentials.json -T application/json http://192.243.4.1:8001/api/auth/register
 ```
-![Alt text](<images/Screenshot from 2023-11-20 14-07-12.png>)
-
+![Alt text](<images/Screenshot from 2023-11-20 21-38-11.png>)
+![Alt text](<images/Screenshot from 2023-11-20 21-38-30.png>)
 ### 16. POST /auth/login
 Nomor ini juga menggunakan ```credentials.json``` yang dibuat sebelumnya, hanya endpoint api nya saja yang dirubah
 ```bash
 ab -n 100 -c 10 -p credentials.json -T application/json http://192.243.4.1:8001/api/auth/login
 ```
-![Alt text](<images/Screenshot from 2023-11-20 14-11-32.png>)
+![Alt text](<images/Screenshot from 2023-11-20 21-39-59.png>)
+![Alt text](<images/Screenshot from 2023-11-20 21-40-13.png>)
 ### 17. GET /me
 Untuk endpoint ini kita perlu untuk menggunakan bearer token, yang didapat dengan melakukan request POST ke endpoint di nomor sebelumnya
 ```bash
@@ -1025,7 +1027,8 @@ Kemudian jalankan command testing dibawah ini
 ```bash
 ab -n 100 -c 10 -H "Authorization: Bearer $token" http://192.243.4.1:8001/api/me
 ```
-![Alt text](<images/Screenshot from 2023-11-20 14-17-10.png>)
+![Alt text](<images/Screenshot from 2023-11-20 21-41-34.png>)
+![Alt text](<images/Screenshot from 2023-11-20 21-41-49.png>)
 ## Soal 18
 Untuk memastikan ketiganya bekerja sama secara adil untuk mengatur Riegel Channel maka implementasikan Proxy Bind pada Eisen untuk mengaitkan IP dari Frieren, Flamme, dan Fern.
 
@@ -1092,11 +1095,17 @@ Untuk melakukan testing kita dapat mengeksekusi command berikut
 ```bash
 ab -n 100 -c 10 -p credentials.json -T application/json http://riegel.canyon.it20.com/api/auth/login
 ```
-![Alt text](<images/Screenshot from 2023-11-20 15-48-24.png>)
+![Alt text](<images/Screenshot from 2023-11-20 21-51-44.png>)
 Bisa dilihat kembali untuk command testing nya tidak lagi menggunakan **ip:port** melainkan **subdomain** yang sudah diarahkan ke Load Balancer
-![Alt text](<images/Screenshot from 2023-11-20 15-50-03.png>)
-![Alt text](<images/Screenshot from 2023-11-20 15-50-25.png>)
-![Alt text](<images/Screenshot from 2023-11-20 15-50-43.png>)
+- Worker Fern
+
+![Alt text](<images/Screenshot from 2023-11-20 21-51-58.png>)
+- Worker Flamme
+
+![Alt text](<images/Screenshot from 2023-11-20 21-52-01.png>)
+- Worker Frieren
+
+![Alt text](<images/Screenshot from 2023-11-20 21-52-10.png>)
 ## Soal 19
 Untuk meningkatkan performa dari Worker, coba implementasikan PHP-FPM pada Frieren, Flamme, dan Fern. Untuk testing kinerja naikkan 
 - pm.max_children
@@ -1172,8 +1181,16 @@ pm.max_spare_servers = 10
 ```pada
 service php8.0-fpm restart
 ```
-![Alt text](<images/Screenshot from 2023-11-20 15-53-49.png>)
-Dari test benchmarking tersebut dapat disimpulkan bahwa parameter yang terbaik adalah script pertama yang juga lebih baik dari konfigurasi default
+![Alt text](<images/Screenshot from 2023-11-20 21-27-06.png>)
+- Worker Fern
+
+![Alt text](<images/Screenshot from 2023-11-20 21-27-54.png>)
+- Worker Flamme
+
+![Alt text](<images/Screenshot from 2023-11-20 21-28-10.png>)
+- Worker Frieren
+
+![Alt text](<images/Screenshot from 2023-11-20 21-28-13.png>)
 ## Soal 20
 Nampaknya hanya menggunakan PHP-FPM tidak cukup untuk meningkatkan performa dari worker maka implementasikan Least-Conn pada Eisen. Untuk testing kinerja dari worker tersebut dilakukan sebanyak 100 request dengan 10 request/second.
 
@@ -1207,11 +1224,7 @@ ab -n 100 -c 10 -p credentials.json -T application/json http://riegel.canyon.it2
 
 
 ## Notes
-Default .bashrc (buat semua)
-
-bash /root/setup.sh
-
-bash /root/config.sh
+Link Grimoire IT20 : https://docs.google.com/document/d/1XvxQcipMVoAFszns-G7TL3rKlegSbcUCRVYmaIFJ9RA/edit?usp=sharing
 
 IP Address
 Heiter (DNS Server) - 192.243.1.2
