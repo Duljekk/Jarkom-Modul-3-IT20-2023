@@ -1112,7 +1112,7 @@ Untuk meningkatkan performa dari Worker, coba implementasikan PHP-FPM pada Frier
 - pm.start_servers
 - pm.min_spare_servers
 - pm.max_spare_servers
-sebanyak tiga percobaan dan lakukan testing sebanyak 100 request dengan 10 request/second kemudian berikan hasil analisisnya pada Grimoire.
+sebanyak tiga percobaan dan lakukan testing sebanyak 100 request dengan 10 request/second kemudian berikan hasil analisisnya pada Gri moire.
 
 Pada soal 19 ini kita akan melakukan modifikasi pada parameter-parameter PHP-FPM yang berada di worker. Parameter-parameter tersebut dapat ditemukan di file ```/etc/php/8.0/fpm/pool.d/www.conf```, berikut adalah script dan parameter yang kami gunakan
 
@@ -1139,7 +1139,16 @@ Untuk command testing nya masih sama dengan nomor sebelumnya
 ```bash
 ab -n 100 -c 10 -p credentials.json -T application/json http://riegel.canyon.it20.com/api/auth/login
 ```
-![Alt text](<images/Screenshot from 2023-11-20 15-55-01.png>)
+![Alt text](<images/Screenshot from 2023-11-20 21-56-15.png>)
+- Worker Fern
+
+![Alt text](<images/Screenshot from 2023-11-20 21-56-30.png>)
+- Worker Flamme
+
+![Alt text](<images/Screenshot from 2023-11-20 21-56-33.png>)
+- Worker Frieren
+
+![Alt text](<images/Screenshot from 2023-11-20 21-56-39.png>)
 - ### Script 2
 ```conf
 [www]
@@ -1159,7 +1168,16 @@ pm.start_servers = 3
 pm.min_spare_servers = 3
 pm.max_spare_servers = 5
 ```
-![Alt text](<images/Screenshot from 2023-11-20 15-53-08.png>)
+![Alt text](<images/Screenshot from 2023-11-20 21-58-54.png>)
+- Worker Fern
+
+![Alt text](<images/Screenshot from 2023-11-20 21-59-07.png>)
+- Worker Flamme
+
+![Alt text](<images/Screenshot from 2023-11-20 21-59-11.png>)
+- Worker Frieren
+
+![Alt text](<images/Screenshot from 2023-11-20 21-59-18.png>)
 - ### Script 3
 ```conf
 [www]
@@ -1181,16 +1199,16 @@ pm.max_spare_servers = 10
 ```pada
 service php8.0-fpm restart
 ```
-![Alt text](<images/Screenshot from 2023-11-20 21-27-06.png>)
+![Alt text](<images/Screenshot from 2023-11-20 22-01-31.png>)
 - Worker Fern
 
-![Alt text](<images/Screenshot from 2023-11-20 21-27-54.png>)
+![Alt text](<images/Screenshot from 2023-11-20 22-01-42.png>)
 - Worker Flamme
 
-![Alt text](<images/Screenshot from 2023-11-20 21-28-10.png>)
+![Alt text](<images/Screenshot from 2023-11-20 22-01-46.png>)
 - Worker Frieren
 
-![Alt text](<images/Screenshot from 2023-11-20 21-28-13.png>)
+![Alt text](<images/Screenshot from 2023-11-20 22-01-56.png>)
 ## Soal 20
 Nampaknya hanya menggunakan PHP-FPM tidak cukup untuk meningkatkan performa dari worker maka implementasikan Least-Conn pada Eisen. Untuk testing kinerja dari worker tersebut dilakukan sebanyak 100 request dengan 10 request/second.
 
@@ -1199,8 +1217,6 @@ Untuk mengubah algoritma yang digunakan oleh Load Balancer kita perlu melakukan 
 ```nginx
 upstream worker {
     least_conn; # Least Connection
-    # least_time; # Least Time
-    # ip_hash; # IP Hash
     server 192.243.4.1:8001;
     server 192.243.4.2:8002;
     server 192.243.4.3:8003;
@@ -1222,20 +1238,32 @@ ab -n 100 -c 10 -p credentials.json -T application/json http://riegel.canyon.it2
 ```
 ![Alt text](<images/Screenshot from 2023-11-20 15-56-32.png>)
 
+- Worker Fern
 
+![Alt text](<images/Screenshot from 2023-11-20 22-06-14.png>)
+- Worker Flamme
+
+![Alt text](<images/Screenshot from 2023-11-20 22-06-18.png>)
+- Worker Frieren
+
+![Alt text](<images/Screenshot from 2023-11-20 22-06-24.png>)
 ## Notes
 Link Grimoire IT20 : https://docs.google.com/document/d/1XvxQcipMVoAFszns-G7TL3rKlegSbcUCRVYmaIFJ9RA/edit?usp=sharing
 
-IP Address
-Heiter (DNS Server) - 192.243.1.2
-Eisen (Load Balancer) - 192.243.2.2
-Himmel (DHCP Server) - 192.243.1.1
-Denken (Database Server) - 192.243.2.1
+Untuk nomor 13-20 karena dikerjakan terpisah dan router nya memiliki address akhir 0, menggunakan IP Address yang berbeda, dengan list sebagai berikut :
 
-Frieren (Laravel Worker) - 192.243.4.3
-Flamme (Laravel Worker) - 192.243.4.2
-Fern (Laravel Worker) - 192.243.4.1
+### Setup
+- Heiter (DNS Server) - 192.243.1.2
+- Eisen (Load Balancer) - 192.243.2.2
+- Himmel (DHCP Server) - 192.243.1.1
+- Denken (Database Server) - 192.243.2.1
 
-Lawine (PHP Worker) - 192.243.3.3
-Linie (PHP Worker) - 192.243.3.2
-Lugner (PHP Worker) - 192.243.3.1
+### Laravel Worker
+- Frieren (Laravel Worker) - 192.243.4.3
+- Flamme (Laravel Worker) - 192.243.4.2
+- Fern (Laravel Worker) - 192.243.4.1
+
+### PHP Worker
+- Lawine (PHP Worker) - 192.243.3.3
+- Linie (PHP Worker) - 192.243.3.2
+- Lugner (PHP Worker) - 192.243.3.1
