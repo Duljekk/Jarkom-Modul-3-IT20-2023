@@ -1,10 +1,5 @@
 # Laporan Resmi Praktikum Jaringan Komputer - Modul 3 IT 20
 
-Tugas: No
-Videos: No
-
-# Laporan Resmi Praktikum Jaringan Komputer - Modul 3 IT 20
-
 > Annisa Rahmapuri - 5027211018
 > 
 
@@ -21,102 +16,175 @@ Setelah mengalahkan Demon King, perjalanan berlanjut. Kali ini, kalian diminta u
 
 - Membuat konfirgurasi network pada setiap node sesuai dengan kerangka Topologi
     
-    ![Untitled](Laporan%20Resmi%20Praktikum%20Jaringan%20Komputer%20-%20Modul%20%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled.png)
+    ![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled.png)
     
-    | Node  | Kategori | Konfigurasi |
-    | --- | --- | --- |
-    | Aura | Router (DHCP Relay) | auto eth0
-    iface eth0 inet dhcp
-    
-    auto eth1
-    iface eth1 inet static
-    	address 192.243.1.1
-    	netmask 255.255.255.0
-    
-    auto eth2
-    iface eth2 inet static
-    	address 192.243.2.1
-    	netmask 255.255.255.0
-    
-    auto eth3
-    iface eth3 inet static
-    	address 192.243.3.1
-    	netmask 255.255.255.0
-    
-    auto eth4
-    iface eth4 inet static
-    	address 192.243.4.1
-    	netmask 255.255.255.0 |
-    | Himmel | DHCP Server | auto eth0
-    iface eth0 inet static
-    	address 192.243.1.2
-    	netmask 255.255.255.0
-    	gateway 192.243.1.1 |
-    | Heiter | DNS Server | auto eth0
-    iface eth0 inet static
-    	address 192.243.1.3
-    	netmask 255.255.255.0
-    	gateway 192.243.1.1 |
-    | Denken | Database Server | auto eth0
-    iface eth0 inet static
-    	address 192.243.2.2
-    	netmask 255.255.255.0
-    	gateway 192.243.2.1 |
-    | Eisen | Load Balancer | auto eth0
-    iface eth0 inet static
-    	address 192.243.2.3
-    	netmask 255.255.255.0
-    	gateway 192.243.2.1 |
-    | Frieren | Laravel Worker | auto eth0
-    iface eth0 inet static
-    	address 192.243.4.4
-    	netmask 255.255.255.0
-    	gateway 192.243.4.1 |
-    | Flamme | Laravel Worker | auto eth0
-    iface eth0 inet static
-    	address 192.243.4.5
-    	netmask 255.255.255.0
-    	gateway 192.243.4.1 |
-    | Fern | Laravel Worker | auto eth0
-    iface eth0 inet static
-    	address 192.243.4.6
-    	netmask 255.255.255.0
-    	gateway 192.243.4.1 |
-    | Lawine | PHP Worker | auto eth0
-    iface eth0 inet static
-    	address 192.243.3.4
-    	netmask 255.255.255.0
-    	gateway 192.243.3.1 |
-    | Linie | PHP Worker | auto eth0
-    iface eth0 inet static
-    	address 192.243.3.5
-    	netmask 255.255.255.0
-    	gateway 192.243.3.1 |
-    | Lugner | PHP Worker | auto eth0
-    iface eth0 inet static
-    	address 192.243.3.6
-    	netmask 255.255.255.0
-    	gateway 192.243.3.1 |
-    | Revolte | Client | auto eth0
-    iface eth0 inet static
-    	address 192.243.3.2
-    	netmask 255.255.255.0
-    	gateway 192.243.3.1 |
-    | Richter | Client | auto eth0
-    iface eth0 inet static
-    	address 192.243.3.3
-    	netmask 255.255.255.0
-    	gateway 192.24.3.1 |
-    | Sein | Client | auto eth0
-    iface eth0 inet static
-    	address 192.243.4.2
-    	netmask 255.255.255.0
-    	gateway 192.243.4.1 |
-    | Stark | Client | auto eth0
-    iface eth0 inet static
-    	address 192.243.4.3
-    	netmask 255.255.255.0
-    	gateway 192.243.4.1 |
+    - Aura
+        
+        ```bash
+        auto eth0
+        iface eth0 inet dhcp
+        
+        auto eth1
+        iface eth1 inet static
+        	address 192.243.1.1
+        	netmask 255.255.255.0
+        
+        auto eth2
+        iface eth2 inet static
+        	address 192.243.2.1
+        	netmask 255.255.255.0
+        
+        auto eth3
+        iface eth3 inet static
+        	address 192.243.3.1
+        	netmask 255.255.255.0
+        
+        auto eth4
+        iface eth4 inet static
+        	address 192.243.4.1
+        	
+        ```
+        
+    - Himmel
+        
+        ```bash
+        auto eth0
+        iface eth0 inet static
+        	address 192.243.1.2
+        	netmask 255.255.255.0
+        	gateway 192.243.1.1
+        ```
+        
+    - Heiter
+        
+        ```bash
+        auto eth0
+        iface eth0 inet static
+        	address 192.243.1.3
+        	netmask 255.255.255.0
+        	gateway 192.243.1.1
+        ```
+        
+    - Denken
+        
+        ```bash
+        auto eth0
+        iface eth0 inet static
+        	address 192.243.2.2
+        	netmask 255.255.255.0
+        	gateway 192.243.2.1
+        ```
+        
+    - Eisien
+        
+        ```bash
+        auto eth0
+        iface eth0 inet static
+        	address 192.243.2.3
+        	netmask 255.255.255.0
+        	gateway 192.243.2.1
+        ```
+        
+    - Frieren
+        
+        ```bash
+        auto eth0
+        iface eth0 inet static
+        	address 192.243.4.4
+        	netmask 255.255.255.0
+        	gateway 192.243.4.1
+        ```
+        
+    - Flamme
+        
+        ```bash
+        auto eth0
+        iface eth0 inet static
+        	address 192.243.4.5
+        	netmask 255.255.255.0
+        	gateway 192.243.4.1
+        ```
+        
+    - Fern
+        
+        ```bash
+        auto eth0
+        iface eth0 inet static
+        	address 192.243.4.6
+        	netmask 255.255.255.0
+        	gateway 192.243.4.1
+        ```
+        
+    - Lawine
+        
+        ```bash
+        auto eth0
+        iface eth0 inet static
+        	address 192.243.3.4
+        	netmask 255.255.255.0
+        	gateway 192.243.3.1
+        ```
+        
+    - Linie
+        
+        ```bash
+        auto eth0
+        iface eth0 inet static
+        	address 192.243.3.6
+        	netmask 255.255.255.0
+        	gateway 192.243.3.1
+        ```
+        
+    - Lugner
+        
+        ```bash
+        auto eth0
+        iface eth0 inet static
+        	address 192.243.3.6
+        	netmask 255.255.255.0
+        	gateway 192.243.3.1
+        ```
+        
+    - Revolte
+        
+        ```bash
+        auto eth0
+        iface eth0 inet static
+        	address 192.243.3.2
+        	netmask 255.255.255.0
+        	gateway 192.243.3.1
+        ```
+        
+    - Richter
+        
+        ```bash
+        auto eth0
+        iface eth0 inet static
+        	address 192.243.3.3
+        	netmask 255.255.255.0
+        	gateway 192.243.3.1
+        ```
+        
+    - Sein
+        
+        ```bash
+        auto eth0
+        iface eth0 inet static
+        	address 192.243.4.2
+        	netmask 255.255.255.0
+        	gateway 192.243.4.1
+        ```
+        
+    - Stark
+        
+        ```bash
+        auto eth0
+        iface eth0 inet static
+        	address 192.243.4.3
+        	netmask 255.255.255.0
+        	gateway 192.243.4.1
+        ```
+        
 - Menjalankan command dibawah ini pada Router Aura
     
     ```bash
@@ -204,9 +272,9 @@ Setelah mengalahkan Demon King, perjalanan berlanjut. Kali ini, kalian diminta u
 
 ### Testing
 
-![Untitled](Laporan%20Resmi%20Praktikum%20Jaringan%20Komputer%20-%20Modul%20%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled.jpeg)
+![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled.jpeg)
 
-![Untitled](Laporan%20Resmi%20Praktikum%20Jaringan%20Komputer%20-%20Modul%20%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%201.jpeg)
+![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%201.jpeg)
 
 ## Soal 2-5
 
@@ -303,9 +371,9 @@ Kemudian, karena masih banyak spell yang harus dikumpulkan, bantulah para petual
 
 ### Testing
 
-![Untitled](Laporan%20Resmi%20Praktikum%20Jaringan%20Komputer%20-%20Modul%20%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%202.jpeg)
+![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%202.jpeg)
 
-![Untitled](Laporan%20Resmi%20Praktikum%20Jaringan%20Komputer%20-%20Modul%20%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%201.png)
+![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%201.png)
 
 ## Soal 6
 
@@ -383,7 +451,7 @@ Pada masing-masing worker PHP, lakukan konfigurasi virtual host untuk website [b
 
 Dilakukan pada masing-masing PHP worker, yaitu Linie, Lawine, dan Lugner. Outputnya akan seperti berikut : 
 
-![Untitled](Laporan%20Resmi%20Praktikum%20Jaringan%20Komputer%20-%20Modul%20%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%203.jpeg)
+![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%203.jpeg)
 
 ## Soal 7
 
@@ -503,9 +571,9 @@ Menjalankan testing 1000 request dan 100 request/second dengan command sebagai b
 ab -n 1000 -c 100 http://www.granz.channel.it20.com/
 ```
 
-![Untitled](Laporan%20Resmi%20Praktikum%20Jaringan%20Komputer%20-%20Modul%20%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%204.jpeg)
+![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%204.jpeg)
 
-![Untitled](Laporan%20Resmi%20Praktikum%20Jaringan%20Komputer%20-%20Modul%20%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%205.jpeg)
+![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%205.jpeg)
 
 > Dapat dilihat, request tersebut menghasilkan `Requests per second: 1387 [#/sec] (mean)`
 > 
@@ -528,13 +596,25 @@ ab -n 200 -c 10 http://www.granz.channel.it20.com/
 ```
 
 - **Round Robbin**
+    
+    ![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%202.png)
+    
 - **Least-connection**
+    
+    ![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%203.png)
+    
 - **IP Hash**
+    
+    ![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%204.png)
+    
 - **Generic Hash**
+    
+    ![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%205.png)
+    
 
 Berdasarkan testing menggunakan masing masing Algoritma Load Balancer, dapat disimpulkan dalam grafik di bawah ini : 
 
- 
+![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%206.png)
 
 ## Soal 9
 
@@ -549,6 +629,23 @@ ab -n 100 -c 10 http://www.granz.channel.it20.com/
 ```
 
 Berdasarkan testing  menggunakan 3 worker, 2 worker, dan 1 worker, dapat disimpulkan dalam grafik di bawah ini : 
+
+- 3 Worker
+    
+    ![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%207.png)
+    
+- 2 Worker
+    
+    ![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%208.png)
+    
+- 1 Worker
+    
+    ![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%209.png)
+    
+
+Berdasarkan testing menggunakan worker yang berbeda, dapat disimpulkan dalam grafik di bawah ini : 
+
+![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%2010.png)
 
 ## Soal 10
 
@@ -596,15 +693,15 @@ Selanjutnya coba tambahkan konfigurasi autentikasi di LB dengan dengan kombinasi
 
 ### Testing
 
-![Untitled](Laporan%20Resmi%20Praktikum%20Jaringan%20Komputer%20-%20Modul%20%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%206.jpeg)
+![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%206.jpeg)
 
 Akan ada Alert berupa `Acces without authorization denied` dan diharuskan untuk memasukan username dan password agar dapat mengakses  `www.granz.channel.it20.com`
 
-![Untitled](Laporan%20Resmi%20Praktikum%20Jaringan%20Komputer%20-%20Modul%20%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%207.jpeg)
+![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%207.jpeg)
 
-![Untitled](Laporan%20Resmi%20Praktikum%20Jaringan%20Komputer%20-%20Modul%20%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%208.jpeg)
+![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%208.jpeg)
 
-![Untitled](Laporan%20Resmi%20Praktikum%20Jaringan%20Komputer%20-%20Modul%20%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%209.jpeg)
+![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%209.jpeg)
 
 ## Soal 11
 
@@ -633,7 +730,7 @@ Kita coba untuk mengakses pada endpoint yang mengandung `/its` yang nantinya a
 lynx www.granz.channel.it20.com/its
 ```
 
-![Untitled](Laporan%20Resmi%20Praktikum%20Jaringan%20Komputer%20-%20Modul%20%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%2010.jpeg)
+![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%2010.jpeg)
 
 ## Soal 12
 
@@ -641,19 +738,37 @@ Selanjutnya LB ini hanya boleh diakses oleh client dengan IP [Prefix IP].3.69, [
 
 ### Cara Pengerjaan
 
-- Menambahkan konfigurasi tambahan di Load Balancer (Eisien)
-    
-    ```bash
-    location / {
-        allow 192.173.3.69;
-        allow 192.173.3.70;
-        allow 192.173.4.167;
-        allow 192.173.4.168;
-        deny all;
-        proxy_pass http://worker;
-    }
-    ```
-    
+- **Load Balancer (Eisien)**
+    - Menambahkan konfigurasi tambahan pada `/etc/nginx/sites-available/lb_php`
+        
+        ```bash
+        location / {
+            allow 192.173.3.69;
+            allow 192.173.3.70;
+            allow 192.173.4.167;
+            allow 192.173.4.168;
+            deny all;
+            proxy_pass http://worker;
+        }
+        ```
+        
+- **DHCP Server (Himmel)**
+    - Menambahkan konfigurasi tambahan pada `/etc/dhcp/dhcpd.conf`
+        
+        ```bash
+        host Revolte {
+            hardware ethernet de:e1:80:e0:8a:b6;
+            fixed-address 192.243.3.69;
+        }
+        ```
+        
+- **Client (Revolte)**
+    - Menambahkan konfigurasi tambahan pada `/etc/network/interfaces`
+        
+        ```bash
+        hwaddress ether 192.243.3.69;
+        ```
+        
 
 ### Testing
 
