@@ -798,7 +798,7 @@ Jalankan service mysql dengan script berikut
 ```bash
 service mysql start
 ```
-![Alt text](<Screenshot from 2023-11-20 00-13-49.png>) 
+![Alt text](<images/Screenshot from 2023-11-20 00-13-49.png>) 
 ### 3. Masuk ke dalam service mySQL
 Sebelum memasukkan command sql kita perlu terlebih dahulu login ke dalam mysql, eksekusi command berikut ini
 ```bash
@@ -818,7 +818,7 @@ GRANT ALL PRIVILEGES ON *.* TO 'kelompokit20'@'%';
 GRANT ALL PRIVILEGES ON *.* TO 'kelompokit20'@'localhost';
 FLUSH PRIVILEGES;
 ```
-![Alt text](<Screenshot from 2023-11-20 00-14-28.png>)
+![Alt text](<images/Screenshot from 2023-11-20 00-14-28.png>)
 ### 5. Lakukan Konfigurasi untuk koneksi ke Worker
 Karena database perlu dapat diakses oleh Laravel Worker, ubah script pada ```/etc/mysql/my.cnf```
 ```bash
@@ -904,7 +904,7 @@ composer update
 composer install
 ```
 ![Alt text](<images/Screenshot from 2023-11-20 14-00-56.png>)
-![Alt text](image.png)
+![Alt text](images/image.png)
 Setelah itu, rename file ```.env.example``` menjadi ```.env```, dan lakukan konfigurasi sebagai berikut
 ```bash
 DB_CONNECTION=mysql
@@ -914,7 +914,7 @@ DB_DATABASE=dbkelompokit20
 DB_USERNAME=kelompokit20
 DB_PASSWORD=passwordit20
 ```
-![Alt text](<Screenshot from 2023-11-20 14-02-55.png>)
+![Alt text](<images/Screenshot from 2023-11-20 14-02-55.png>)
 
 Konfigurasi tersebut akan menghubungkan aplikasi dengan database yang sudah dibuat sebelumnya. Setelah itu, eksekusi command Laravel berikut
 ```bash
@@ -925,7 +925,7 @@ php artisan jwt:secret
 php artisan storage:link
 ```
 ![Alt text](<images/Screenshot from 2023-11-20 14-00-56.png>)
-![Alt text](image.png)
+![Alt text](images/image.png)
 Kita juga perlu melakukan konfigurasi nginx, lakukan konfigurasi seperti dibawah ini pada file ```/etc/nginx/sites-available/laravel-worker```
 ```nginx
 server {
