@@ -979,8 +979,11 @@ Untuk melakukan testing kita dapat mengeksekusi command berikut
 ```bash
 ab -n 100 -c 10 -p credentials.json -T application/json http://riegel.canyon.it20.com/api/auth/login
 ```
+![Alt text](<images/Screenshot from 2023-11-20 15-48-24.png>)
 Bisa dilihat kembali untuk command testing nya tidak lagi menggunakan **ip:port** melainkan **subdomain** yang sudah diarahkan ke Load Balancer
-
+![Alt text](<images/Screenshot from 2023-11-20 15-50-03.png>)
+![Alt text](<images/Screenshot from 2023-11-20 15-50-25.png>)
+![Alt text](<images/Screenshot from 2023-11-20 15-50-43.png>)
 ## Soal 19
 Untuk meningkatkan performa dari Worker, coba implementasikan PHP-FPM pada Frieren, Flamme, dan Fern. Untuk testing kinerja naikkan 
 - pm.max_children
@@ -1010,6 +1013,11 @@ pm.start_servers = 1
 pm.min_spare_servers = 1
 pm.max_spare_servers = 3
 ```
+Untuk command testing nya masih sama dengan nomor sebelumnya
+```bash
+ab -n 100 -c 10 -p credentials.json -T application/json http://riegel.canyon.it20.com/api/auth/login
+```
+![Alt text](<images/Screenshot from 2023-11-20 15-55-01.png>)
 - ### Script 2
 ```conf
 [www]
@@ -1029,6 +1037,7 @@ pm.start_servers = 3
 pm.min_spare_servers = 3
 pm.max_spare_servers = 5
 ```
+![Alt text](<images/Screenshot from 2023-11-20 15-53-08.png>)
 - ### Script 3
 ```conf
 [www]
@@ -1050,11 +1059,8 @@ pm.max_spare_servers = 10
 ```pada
 service php8.0-fpm restart
 ```
-Untuk command testing nya masih sama dengan nomor sebelumnya
-```bash
-ab -n 100 -c 10 -p credentials.json -T application/json http://riegel.canyon.it20.com/api/auth/login
-```
-
+![Alt text](<images/Screenshot from 2023-11-20 15-53-49.png>)
+Dari test benchmarking tersebut dapat disimpulkan bahwa parameter yang terbaik adalah script pertama yang juga lebih baik dari konfigurasi default
 ## Soal 20
 Nampaknya hanya menggunakan PHP-FPM tidak cukup untuk meningkatkan performa dari worker maka implementasikan Least-Conn pada Eisen. Untuk testing kinerja dari worker tersebut dilakukan sebanyak 100 request dengan 10 request/second.
 
@@ -1084,8 +1090,10 @@ Save kemudian restart nginx dan lakukan testing menggunakan command sebelum-sebe
 service nginx restart
 ab -n 100 -c 10 -p credentials.json -T application/json http://riegel.canyon.it20.com/api/auth/login
 ```
+![Alt text](<images/Screenshot from 2023-11-20 15-56-32.png>)
 
 
+## Notes
 Default .bashrc (buat semua)
 
 bash /root/setup.sh
