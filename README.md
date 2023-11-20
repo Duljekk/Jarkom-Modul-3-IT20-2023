@@ -465,7 +465,7 @@ aturlah agar Eisen dapat bekerja dengan maksimal, lalu lakukan testing dengan 10
 
 ### Cara Pengerjaan
 
-- **DNS Server (Himmel)**
+- **DNS Server (Heiter)**
     - Modifikasi konfigurasi DNS Server agar domainnya mengarah pada Load Balancer (Eisien)
         
         ```bash
