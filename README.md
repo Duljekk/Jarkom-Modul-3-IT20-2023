@@ -685,6 +685,7 @@ Jalankan service mysql dengan script berikut
 ```bash
 service mysql start
 ```
+![Alt text](<Screenshot from 2023-11-20 00-13-49.png>) 
 ### 3. Masuk ke dalam service mySQL
 Sebelum memasukkan command sql kita perlu terlebih dahulu login ke dalam mysql, eksekusi command berikut ini
 ```bash
@@ -693,7 +694,7 @@ mysql -u root -p
 Untuk password defaultnya adalah : **root**     
 
 Disini kita sudah berhasil untuk login sebagai user root pada service mysql
-
+![Alt text](<images/Screenshot from 2023-11-20 00-14-16.png>)
 ### 4. Lakukan Konfigurasi mySQL
 Konfigurasikan mySQL untuk aplikasi Laravel yang akan digunakan dengan mengeksekusi query berikut
 ```sql
@@ -704,6 +705,7 @@ GRANT ALL PRIVILEGES ON *.* TO 'kelompokit20'@'%';
 GRANT ALL PRIVILEGES ON *.* TO 'kelompokit20'@'localhost';
 FLUSH PRIVILEGES;
 ```
+![Alt text](<Screenshot from 2023-11-20 00-14-28.png>)
 ### 5. Lakukan Konfigurasi untuk koneksi ke Worker
 Karena database perlu dapat diakses oleh Laravel Worker, ubah script pada ```/etc/mysql/my.cnf```
 ```bash
@@ -715,6 +717,10 @@ Dan juga pada file ```/etc/mysql/mariadb.conf.d/50-server.cnf```
 ```bash
 bind-address            = 0.0.0.0
 ```
+Jangan lupa untuk merestart service mySQL
+```bash
+service restart mysql
+```
 ### 6. Lakukan Testing pada Worker
 Setelah semua konfigurasi selesai, kita dapat melakukan testing pada salah satu worker, disini kami menggunakan Worker Fern yang memiliki IP Address **192.243.4.1** dengan menginstallasi package mariadb-client dan menggunakan command berikut
 ```bash
@@ -725,6 +731,7 @@ mariadb --host=192.243.2.1 --port=3306 --user=kelompokit20 --password=passwordit
 ```
 Hasilnya adalah Worker Fern berhasil mengakses Database
 
+![Alt text](<images/Screenshot from 2023-11-20 13-56-24.png>)
 ## Soal 14
 Frieren, Flamme, dan Fern memiliki Riegel Channel sesuai dengan quest guide berikut. Jangan lupa melakukan instalasi PHP8.0 dan Composer
 
@@ -736,7 +743,6 @@ Tambahkan IP Heiter di resolv.conf Denken
 ```bash
 echo 'nameserver 192.243.1.2' > etc/resolv.conf
 ```
-
 ### 2. Installasi Package yang diperlukan
 Ada beberapa package yang diperlukan untuk mengerjakan nomor 14 ini. Berikut adalah script untuk menginstall dan menjalankan package-package tersebut
 ```bash
@@ -776,6 +782,7 @@ Pindahkan hasil clone tersebut kedalam folder ```/var/www/laravel-praktikum-jark
 ```bash
 mv laravel-praktikum-jarkom /var/www/laravel-praktikum-jarkom
 ```
+![Alt text](<images/Screenshot from 2023-11-20 13-59-48.png>)
 ### 4. Konfigurasi aplikasi Laravel
 Sebelum mulai melakukan konfigurasi, kita terlebih dahulu perlu menginstall modul yang ada pada aplikasi Laravel kita menggunakan composer
 ```bash
@@ -783,6 +790,8 @@ cd /var/www/laravel-praktikum-jarkom
 composer update
 composer install
 ```
+![Alt text](<images/Screenshot from 2023-11-20 14-00-56.png>)
+![Alt text](image.png)
 Setelah itu, rename file ```.env.example``` menjadi ```.env```, dan lakukan konfigurasi sebagai berikut
 ```bash
 DB_CONNECTION=mysql
@@ -792,6 +801,7 @@ DB_DATABASE=dbkelompokit20
 DB_USERNAME=kelompokit20
 DB_PASSWORD=passwordit20
 ```
+![Alt text](<Screenshot from 2023-11-20 14-02-55.png>)
 Konfigurasi tersebut akan menghubungkan aplikasi dengan database yang sudah dibuat sebelumnya. Setelah itu, eksekusi command Laravel berikut
 ```bash
 php artisan migrate:fresh
@@ -800,6 +810,8 @@ php artisan key:generate
 php artisan jwt:secret
 php artisan storage:link
 ```
+![Alt text](<images/Screenshot from 2023-11-20 14-00-56.png>)
+![Alt text](image.png)
 Kita juga perlu melakukan konfigurasi nginx, lakukan konfigurasi seperti dibawah ini pada file ```/etc/nginx/sites-available/laravel-worker```
 ```nginx
 server {
@@ -845,7 +857,7 @@ Untuk melakukan testing kita dapat menggunakan **lynx localhost:[port]** sesuai 
 lynx localhost:8001
 ```
 Jika sudah berhasil, akan tampil tampilan berikut
-
+![Alt text](<images/Screenshot from 2023-11-20 14-04-16.png>)
 ## Soal 15 - 17
 Pada 3 soal ini kita akan melakukan benchmarking pada client untuk aplikasi Laravel yang sudah kita buat sebelumnya
 
@@ -876,17 +888,20 @@ Untuk testingnya menggunakan command berikut
 ```bash
 ab -n 100 -c 10 -p credentials.json -T application/json http://192.243.4.1:8001/api/auth/register
 ```
+![Alt text](<images/Screenshot from 2023-11-20 14-07-12.png>)
 
 ### 16. POST /auth/login
 Nomor ini juga menggunakan ```credentials.json``` yang dibuat sebelumnya, hanya endpoint api nya saja yang dirubah
 ```bash
 ab -n 100 -c 10 -p credentials.json -T application/json http://192.243.4.1:8001/api/auth/login
 ```
+![Alt text](<images/Screenshot from 2023-11-20 14-11-32.png>)
 ### 17. GET /me
 Untuk endpoint ini kita perlu untuk menggunakan bearer token, yang didapat dengan melakukan request POST ke endpoint di nomor sebelumnya
 ```bash
 curl -X POST -H "Content-Type: application/json" -d @credentials.json http://192.243.4.1:8001/api/auth/login > output.txt
 ```
+![Alt text](<images/Screenshot from 2023-11-20 14-14-32.png>)
 Response dari request tersebut akan disimpan di output.txt, jika berhasil maka akan tampil token yang akan kita gunakan. Perlu diperhatikan jika terjadi kegagalan ada kemungkinan server menerima terlalu banyak request sehingga kita perlu tunggu dulu beberapa saat.
 
 Selanjutnya, masukkan token ke variabel global dengan jq
@@ -897,7 +912,7 @@ Kemudian jalankan command testing dibawah ini
 ```bash
 ab -n 100 -c 10 -H "Authorization: Bearer $token" http://192.243.4.1:8001/api/me
 ```
-
+![Alt text](<images/Screenshot from 2023-11-20 14-17-10.png>)
 ## Soal 18
 Untuk memastikan ketiganya bekerja sama secara adil untuk mengatur Riegel Channel maka implementasikan Proxy Bind pada Eisen untuk mengaitkan IP dari Frieren, Flamme, dan Fern.
 
