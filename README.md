@@ -1,5 +1,10 @@
 # Laporan Resmi Praktikum Jaringan Komputer - Modul 3 IT 20
 
+Tugas: No
+Videos: No
+
+# Laporan Resmi Praktikum Jaringan Komputer - Modul 3 IT 20
+
 > Annisa Rahmapuri - 5027211018
 > 
 
@@ -16,7 +21,7 @@ Setelah mengalahkan Demon King, perjalanan berlanjut. Kali ini, kalian diminta u
 
 - Membuat konfirgurasi network pada setiap node sesuai dengan kerangka Topologi
     
-    ![image](https://github.com/Duljekk/Jarkom-Modul-3-IT20-2023/assets/88900360/96ce5d3a-19e8-42e0-b69b-980342a18aca)
+    ![Untitled](Laporan%20Resmi%20Praktikum%20Jaringan%20Komputer%20-%20Modul%20%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled.png)
     
     | Node  | Kategori | Konfigurasi |
     | --- | --- | --- |
@@ -179,7 +184,10 @@ Setelah mengalahkan Demon King, perjalanan berlanjut. Kali ini, kalian diminta u
         ;
         $TTL    604800
         @       IN      SOA     granz.channel.it20.com. root.granz.channel.it20.com. (
-                                2023101001      ; Serial0-1
+                                2023101001      ; Serial
+                                 604800         ; Refresh
+                                  86400         ; Retry
+                                2419200         ; Expire
                                  604800 )       ; Negative Cache TTL
         ;
         @       IN      NS      granz.channel.it20.com.
@@ -195,9 +203,459 @@ Setelah mengalahkan Demon King, perjalanan berlanjut. Kali ini, kalian diminta u
         
 
 ### Testing
-![WhatsApp Image 2023-11-17 at 12 42 31_ad58a312](https://github.com/Duljekk/Jarkom-Modul-3-IT20-2023/assets/88900360/5dfae062-b9af-4793-bf31-99bd5475663d)
-![WhatsApp Image 2023-11-17 at 12 43 36_a796e5b0](https://github.com/Duljekk/Jarkom-Modul-3-IT20-2023/assets/88900360/f4484832-424d-4e51-b7c4-53f3f961a6ba)
 
+![Untitled](Laporan%20Resmi%20Praktikum%20Jaringan%20Komputer%20-%20Modul%20%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled.jpeg)
+
+![Untitled](Laporan%20Resmi%20Praktikum%20Jaringan%20Komputer%20-%20Modul%20%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%201.jpeg)
+
+## Soal 2-5
+
+Kemudian, karena masih banyak spell yang harus dikumpulkan, bantulah para petualang untuk memenuhi kriteria berikut.:
+
+1. Semua **CLIENT** harus menggunakan konfigurasi dari DHCP Server.
+2. Client yang melalui Switch3 mendapatkan range IP dari [prefix IP].3.16 - [prefix IP].3.32 dan [prefix IP].3.64 - [prefix IP].3.80 **(2)**
+3. Client yang melalui Switch4 mendapatkan range IP dari [prefix IP].4.12 - [prefix IP].4.20 dan [prefix IP].4.160 - [prefix IP].4.168 **(3)**
+4. Client mendapatkan DNS dari Heiter dan dapat terhubung dengan internet melalui DNS tersebut **(4)**
+5. Lama waktu DHCP server meminjamkan alamat IP kepada Client yang melalui Switch3 selama 3 menit sedangkan pada client yang melalui Switch4 selama 12 menit. Dengan waktu maksimal dialokasikan untuk peminjaman alamat IP selama 96 menit **(5)** 
+
+### Cara Pengerjaan
+
+- **DHCP Server (Himmel)**
+    - Mengupdate paket, menginstal ISC DHCP Server, dan mengecek versi DHCP server yang telah diinstal.
+        
+        ```bash
+        echo 'nameserver 192.168.122.1' > /etc/resolv.conf
+        
+        apt-get update
+        apt-get install isc-dhcp-server
+        dhcpd --version
+        ```
+        
+    - Membuat konfigurasi subnet dan rentang alamat IP untuk klien di masing-masing subnet, yaitu pada `Switch3` pada range '192.243.3.16' - '192.243.3.32',  '192.243.3.64' - '192.243.3.80' dan `Switc4` pada range '192.243.4.12' - '192.243.4.20' dan '192.243.4.160' -'192.243.4.168' sesuai dengan peritah soal. Kami juga menetapkan default-lease-time untuk `Switch3` selama 3 menit sedangkan pada client yang melalui `Switch4` selama 12 menit dan max-lease-time selama 96 menit, sesuai dengan perintah soal.
+        
+        ```bash
+        echo '
+        subnet '192.243.1.0' netmask '255.255.255.0' {
+           
+        }
+        
+        subnet '192.243.2.0' netmask '255.255.255.0' {
+            
+        }
+        
+        subnet '192.243.3.0' netmask '255.255.255.0' {
+            range '192.243.3.16' '192.243.3.32';
+            range '192.243.3.64' '192.243.3.80';
+            option routers '192.243.3.1';
+            option domain-name-servers '192.243.1.3';
+            default-lease-time '180';
+            max-lease-time '5760';
+        }
+        
+        subnet '192.243.4.0' netmask '255.255.255.0' {
+            range '192.243.4.12' '192.243.4.20';
+            range '192.243.4.160' '192.243.4.168';
+            option routers '192.243.4.1';
+            option domain-name-servers '192.243.1.3';
+            default-lease-time '720';
+            max-lease-time '5760';
+        }
+        ' > /etc/dhcp/dhcpd.conf
+        ```
+        
+    - Restart dan cek status bind9
+        
+        ```bash
+        service isc-dhcp-server restart
+        service isc-dhcp-server status
+        ```
+        
+- **DHCP Relay (Aura)**
+    - Mengupdate paket, menginstal ISC DHCP Relay, dan memulai layanan DHCP relay
+        
+        ```bash
+        apt-get update
+        apt-get install isc-dhcp-relay -y
+        service isc-dhcp-relay start
+        ```
+        
+    - Menetapkan konfigurasi DHCP relay dengan menentukan alamat IP DHCP server (Himmel) pada `SERVERS` dan antarmuka yang digunakan oleh relay pada `INTERFACES`, sesuai dengan topologi yang dibuat.
+        
+        ```bash
+        echo '
+        SERVERS="192.243.1.2"
+        INTERFACES="eth1 eth2 eth3 eth4"
+        OPTIONS=' > /etc/default/isc-dhcp-relay
+        ```
+        
+    - Mengaktifkan IP forwarding pada router. Hal ini memungkinkan router untuk meneruskan paket antara antarmuka yang berbeda.
+        
+        ```bash
+        echo 'net.ipv4.ip_forward=1' > /etc/sysctl.conf
+        ```
+        
+    - Restart DHCP Relay
+        
+        ```bash
+        service isc-dhcp-relay restart
+        ```
+        
+
+### Testing
+
+![Untitled](Laporan%20Resmi%20Praktikum%20Jaringan%20Komputer%20-%20Modul%20%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%202.jpeg)
+
+![Untitled](Laporan%20Resmi%20Praktikum%20Jaringan%20Komputer%20-%20Modul%20%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%201.png)
+
+## Soal 6
+
+Pada masing-masing worker PHP, lakukan konfigurasi virtual host untuk website [berikut](https://drive.google.com/file/d/1ViSkRq7SmwZgdK64eRbr5Fm1EGCTPrU1/view?usp=sharing) dengan menggunakan php 7.3. **(6)**
+
+### Cara Pengerjaan
+
+- Melakukan instalasi dan konfigurasi awal untuk masing masing PHP worker.  Nginx dan PHP-FPM diaktifkan untuk menghosting aplikasi PHP.
+    
+    ```bash
+    # Installasi paket-paket yang diperlukan
+    apt-get update
+    apt-get install nginx -y
+    apt-get install wget unzip -y
+    apt-get install lynx -y
+    apt-get install htop -y
+    apt-get install apache2-utils -y
+    apt-get install php php-fpm -y
+    
+    # Start layanan Nginx dan PHP-FPM
+    service nginx start
+    service nginx 
+    service php7.3-fpm start
+    ```
+    
+- Download dan menyiapkan aplikasi PHP yang akan dihost pada worker.
+    
+    ```bash
+    # Unduh dan ekstrak aplikasi PHP dari Google Drive
+    wget -O '/var/www/granz.channel.it20.com.zip' 'https://drive.google.com/u/0/uc?id=1ViSkRq7SmwZgdK64eRbr5Fm1EGCTPrU1&export=download'
+    unzip -o /var/www/granz.channel.it20.com.zip -d /var/www/
+    rm /var/www/granz.channel.it20.com
+    mv /var/www/modul-3 /var/www/granz.channel.it20.com
+    ```
+    
+- Copy konfigurasi default Nginx, kemudian mengonfigurasi Nginx untuk menghosting aplikasi PHP di direktori **`/var/www/granz.channel.it20.com`**. Konfigurasi ini mencakup penanganan file PHP dan pengaturan fastcgi untuk PHP-FPM.
+    
+    ```bash
+    # Salin konfigurasi default Nginx dan atur konfigurasi untuk aplikasi PHP
+    cp /etc/nginx/sites-available/default /etc/nginx/sites-available/granz.channel.it20.com
+    ln -s /etc/nginx/sites-available/granz.channel.it20.com /etc/nginx/sites-enabled/
+    rm /etc/nginx/sites-enabled/default
+    
+    # Konfigurasi Nginx untuk aplikasi PHP
+    echo '
+    server {
+        listen 80;
+        server_name _;
+    
+        root /var/www/granz.channel.it20.com;
+        index index.php index.html index.htm;
+    
+        location / {
+            try_files $uri $uri/ /index.php?$query_string;
+        }
+    
+        location ~ \.php$ {
+            include snippets/fastcgi-php.conf;
+            fastcgi_pass unix:/run/php/php7.3-fpm.sock;  # Sesuaikan versi PHP dan socket
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            include fastcgi_params;
+        }
+    }' > /etc/nginx/sites-available/granz.channel.it20.com
+    ```
+    
+- Restart Nginx
+    
+    ```bash
+    # Restart layanan Nginx
+    service nginx restart
+    ```
+    
+
+### Testing
+
+Dilakukan pada masing-masing PHP worker, yaitu Linie, Lawine, dan Lugner. Outputnya akan seperti berikut : 
+
+![Untitled](Laporan%20Resmi%20Praktikum%20Jaringan%20Komputer%20-%20Modul%20%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%203.jpeg)
+
+## Soal 7
+
+Kepala suku dari [Bredt Region](https://frieren.fandom.com/wiki/Bredt_Region) memberikan resource server sebagai berikut :
+
+1. Lawine, 4GB, 2vCPU, dan 80 GB SSD.
+2. Linie, 2GB, 2vCPU, dan 50 GB SSD.
+3. Lugner 1GB, 1vCPU, dan 25 GB SSD.
+
+aturlah agar Eisen dapat bekerja dengan maksimal, lalu lakukan testing dengan 1000 request dan 100 request/second.
+
+### Cara Pengerjaan
+
+- **DNS Server (Himmel)**
+    - Modifikasi konfigurasi DNS Server agar domainnya mengarah pada Load Balancer (Eisien)
+        
+        ```bash
+        echo '
+        ;
+        ; BIND data file for local loopback interface
+        ;
+        $TTL    604800
+        @       IN      SOA     riegel.canyon.it20.com. root.riegel.canyon.it20.com. (
+                                2023101001      ; Serial
+                                 604800         ; Refresh
+                                  86400         ; Retry
+                                2419200         ; Expire
+                                 604800 )       ; Negative Cache TTL
+        ;
+        @       IN      NS      riegel.canyon.it20.com.
+        @       IN      A       192.243.2.3     ; IP Eisien
+        www     IN      CNAME   riegel.canyon.it20.com.' > /etc/bind/jarkom/riegel.canyon.it20.com
+        
+        echo '
+        ; BIND data file for local loopback interface
+        ;
+        $TTL    604800
+        @       IN      SOA     granz.channel.it20.com. root.granz.channel.it20.com. (
+                                2023101001      ; Serial
+                                 604800         ; Refresh
+                                  86400         ; Retry
+                                2419200         ; Expire
+                                 604800 )       ; Negative Cache TTL
+        ;
+        @       IN      NS      granz.channel.it20.com.
+        @       IN      A       192.243.2.3  ; IP Eisien
+        www     IN      CNAME   granz.channel.it20.com.' > /etc/bind/jarkom/granz.channel.it20.com
+        ```
+        
+- **Load Balancer (Eisien)**
+    - Mengonfigurasi nameserver pada file **`/etc/resolv.conf`** dan menginstal selutuh kebutuhan yang diinginkan.
+        
+        ```bash
+        # Konfigurasi nameserver pada resolv.conf
+        echo '
+        nameserver 192.243.1.3 # IP DNS Server
+        nameserver 192.168.122.1' > /etc/resolv.conf
+        
+        # Install dan start Nginx
+        apt-get update 
+        apt-get install nginx -y
+        service nginx start
+        service nginx status
+        
+        apt-get install php php-fpm -y
+        apt install apache2-utils -y
+        ```
+        
+    - Membuat konfigurasi Load Balancer di Nginx dengan upstream server yang terdiri dari tiga alamat IP Worker (192.243.3.4, 192.243.3.5, 192.243.3.6). Setiap permintaan ke Load Balancer akan dialihkan ke salah satu dari worker tersebut
+        
+        ```bash
+        # Salin konfigurasi default Nginx ke konfigurasi Load Balancer
+        cp /etc/nginx/sites-available/default /etc/nginx/sites-available/lb_php
+        
+        # Konfigurasi Load Balancer pada lb_php
+        echo ' upstream worker {
+            server 192.243.3.4;
+            server 192.243.3.5;
+            server 192.243.3.6;
+        }
+        
+        server {
+            listen 80;
+            server_name granz.channel.it20.com www.granz.channel.it20.com;
+        
+            root /var/www/html;
+        
+            index index.html index.htm index.nginx-debian.html;
+        
+            server_name _;
+            
+             location / {
+                proxy_pass http://worker;
+            }
+        } ' > /etc/nginx/sites-available/lb_php
+        ```
+        
+    - Mengaktifkan konfigurasi Load Balancer, menghapus konfigurasi default yang tidak dibutuhkan, dan merestart layanan Nginx untuk menerapkan perubahan
+        
+        ```bash
+        # Aktifkan konfigurasi Load Balancer
+        ln -s /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
+        
+        # Hapus konfigurasi default yang tidak dibutuhkan
+        rm /etc/nginx/sites-enabled/default
+        
+        # Restart layanan Nginx untuk menerapkan perubahan
+        service nginx restart
+        ```
+        
+
+### Testing
+
+Menjalankan testing 1000 request dan 100 request/second dengan command sebagai berikut : 
+
+```bash
+ab -n 1000 -c 100 http://www.granz.channel.it20.com/
+```
+
+![Untitled](Laporan%20Resmi%20Praktikum%20Jaringan%20Komputer%20-%20Modul%20%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%204.jpeg)
+
+![Untitled](Laporan%20Resmi%20Praktikum%20Jaringan%20Komputer%20-%20Modul%20%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%205.jpeg)
+
+> Dapat dilihat, request tersebut menghasilkan `Requests per second: 1387 [#/sec] (mean)`
+> 
+
+## Soal 8
+
+Karena diminta untuk menuliskan grimoire, buatlah analisis hasil testing dengan 200 request dan 10 request/second masing-masing algoritma Load Balancer dengan ketentuan sebagai berikut:
+
+1. Nama Algoritma Load Balancer
+2. Report hasil testing pada Apache Benchmark
+3. Grafik request per second untuk masing masing algoritma.
+4. Analisis
+
+### Testing
+
+Menjalankan testing dengan 200 request dan 10 request/second dengan masing-masing algoritma Load Balancer. 
+
+```bash
+ab -n 200 -c 10 http://www.granz.channel.it20.com/
+```
+
+- **Round Robbin**
+- **Least-connection**
+- **IP Hash**
+- **Generic Hash**
+
+Berdasarkan testing menggunakan masing masing Algoritma Load Balancer, dapat disimpulkan dalam grafik di bawah ini : 
+
+ 
+
+## Soal 9
+
+Dengan menggunakan algoritma Round Robin, lakukan testing dengan menggunakan 3 worker, 2 worker, dan 1 worker sebanyak 100 request dengan 10 request/second, kemudian tambahkan grafiknya pada grimoire. 
+
+### Testing
+
+Menjalankan testing dengan menggunakan 3 worker, 2 worker, dan 1 worker sebanyak 100 request dengan 10 request/second. 
+
+```bash
+ab -n 100 -c 10 http://www.granz.channel.it20.com/
+```
+
+Berdasarkan testing  menggunakan 3 worker, 2 worker, dan 1 worker, dapat disimpulkan dalam grafik di bawah ini : 
+
+## Soal 10
+
+Selanjutnya coba tambahkan konfigurasi autentikasi di LB dengan dengan kombinasi username: “netics” dan password: “ajkit20”, dengan yyy merupakan kode kelompok. Terakhir simpan file “htpasswd” nya di /etc/nginx/rahasisakita/ 
+
+### Cara Pengerjaan
+
+- Pada Load Balancer (Eisien), tambahkan konfigurasi autentikasi di Load Balancer dan menyimpan file htpasswd, Anda dapat menggunakan perintah **`htpasswd`** yang sudah disediakan oleh Apache Utilities.
+    
+    ```bash
+    # Buat direktori untuk menyimpan file htpasswd
+    mkdir -p /etc/nginx/rahasisakita
+    
+    # Buat file htpasswd dengan kombinasi username dan password
+    htpasswd -c /etc/nginx/rahasisakita/htpasswd netics
+    ```
+    
+- Tambahkan blok **`auth_basic`** dan **`auth_basic_user_file`** dalam blok **`location /`**
+    
+    ```bash
+    server {
+        listen 80;
+        server_name granz.channel.it20.com www.granz.channel.it20.com;
+    
+        root /var/www/html;
+    
+        index index.html index.htm index.nginx-debian.html;
+    
+        server_name _;
+        
+        location / {
+            auth_basic "Restricted Content";
+            auth_basic_user_file /etc/nginx/rahasisakita/htpasswd;
+    
+        }
+    } ' > /etc/nginx/sites-available/lb_php
+    ```
+    
+- Restart Nginx
+    
+    ```bash
+    service nginx restart
+    ```
+    
+
+### Testing
+
+![Untitled](Laporan%20Resmi%20Praktikum%20Jaringan%20Komputer%20-%20Modul%20%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%206.jpeg)
+
+Akan ada Alert berupa `Acces without authorization denied` dan diharuskan untuk memasukan username dan password agar dapat mengakses  `www.granz.channel.it20.com`
+
+![Untitled](Laporan%20Resmi%20Praktikum%20Jaringan%20Komputer%20-%20Modul%20%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%207.jpeg)
+
+![Untitled](Laporan%20Resmi%20Praktikum%20Jaringan%20Komputer%20-%20Modul%20%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%208.jpeg)
+
+![Untitled](Laporan%20Resmi%20Praktikum%20Jaringan%20Komputer%20-%20Modul%20%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%209.jpeg)
+
+## Soal 11
+
+Lalu buat untuk setiap request yang mengandung /its akan di proxy passing menuju halaman [https://www.its.ac.id](https://www.its.ac.id/).  **hint: (proxy_pass)**
+
+### Cara Pengerjaan
+
+- Menambahkan konfigurasi tambahan di Load Balancer (Eisien)
+    
+    ```bash
+    location ~ /its {
+        proxy_pass https://www.its.ac.id;
+        proxy_set_header Host www.its.ac.id;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+    ```
+    
+
+### Testing
+
+Kita coba untuk mengakses pada endpoint yang mengandung `/its` yang nantinya akan akan diarahkan oleh `proxy_pass` menuju `https://www.its.ac.id` dengan command sebagai berikut : 
+
+```bash
+lynx www.granz.channel.it20.com/its
+```
+
+![Untitled](Laporan%20Resmi%20Praktikum%20Jaringan%20Komputer%20-%20Modul%20%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%2010.jpeg)
+
+## Soal 12
+
+Selanjutnya LB ini hanya boleh diakses oleh client dengan IP [Prefix IP].3.69, [Prefix IP].3.70, [Prefix IP].4.167, dan [Prefix IP].4.168. 
+
+### Cara Pengerjaan
+
+- Menambahkan konfigurasi tambahan di Load Balancer (Eisien)
+    
+    ```bash
+    location / {
+        allow 192.173.3.69;
+        allow 192.173.3.70;
+        allow 192.173.4.167;
+        allow 192.173.4.168;
+        deny all;
+        proxy_pass http://worker;
+    }
+    ```
+    
+
+### Testing
 
 
 ## Soal 13
