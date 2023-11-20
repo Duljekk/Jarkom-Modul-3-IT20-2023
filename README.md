@@ -16,7 +16,7 @@ Setelah mengalahkan Demon King, perjalanan berlanjut. Kali ini, kalian diminta u
 
 - Membuat konfirgurasi network pada setiap node sesuai dengan kerangka Topologi
     
-    ![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled.png)
+    ![Untitled](image/Untitled.png)
     
     - Aura
         
@@ -272,9 +272,9 @@ Setelah mengalahkan Demon King, perjalanan berlanjut. Kali ini, kalian diminta u
 
 ### Testing
 
-![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled.jpeg)
+![Untitled](image/Untitled.jpeg)
 
-![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%201.jpeg)
+![Untitled](image/Untitled%201.jpeg)
 
 ## Soal 2-5
 
@@ -371,9 +371,9 @@ Kemudian, karena masih banyak spell yang harus dikumpulkan, bantulah para petual
 
 ### Testing
 
-![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%202.jpeg)
+![Untitled](image/Untitled%202.jpeg)
 
-![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%201.png)
+![Untitled](image/Untitled%201.png)
 
 ## Soal 6
 
@@ -451,7 +451,7 @@ Pada masing-masing worker PHP, lakukan konfigurasi virtual host untuk website [b
 
 Dilakukan pada masing-masing PHP worker, yaitu Linie, Lawine, dan Lugner. Outputnya akan seperti berikut : 
 
-![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%203.jpeg)
+![Untitled](image/Untitled%203.jpeg)
 
 ## Soal 7
 
@@ -571,9 +571,9 @@ Menjalankan testing 1000 request dan 100 request/second dengan command sebagai b
 ab -n 1000 -c 100 http://www.granz.channel.it20.com/
 ```
 
-![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%204.jpeg)
+![Untitled](image/Untitled%204.jpeg)
 
-![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%205.jpeg)
+![Untitled](image/Untitled%205.jpeg)
 
 > Dapat dilihat, request tersebut menghasilkan `Requests per second: 1387 [#/sec] (mean)`
 > 
@@ -597,24 +597,24 @@ ab -n 200 -c 10 http://www.granz.channel.it20.com/
 
 - **Round Robbin**
     
-    ![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%202.png)
+    ![Untitled](image/Untitled%202.png)
     
 - **Least-connection**
     
-    ![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%203.png)
+    ![Untitled](image/Untitled%203.png)
     
 - **IP Hash**
     
-    ![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%204.png)
+    ![Untitled](image/Untitled%204.png)
     
 - **Generic Hash**
     
-    ![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%205.png)
+    ![Untitled](image/Untitled%205.png)
     
 
 Berdasarkan testing menggunakan masing masing Algoritma Load Balancer, dapat disimpulkan dalam grafik di bawah ini : 
 
-![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%206.png)
+![Untitled](image/Untitled%206.png)
 
 ## Soal 9
 
@@ -632,20 +632,20 @@ Berdasarkan testing  menggunakan 3 worker, 2 worker, dan 1 worker, dapat disimpu
 
 - 3 Worker
     
-    ![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%207.png)
+    ![Untitled](image/Untitled%207.png)
     
 - 2 Worker
     
-    ![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%208.png)
+    ![Untitled](image/Untitled%208.png)
     
 - 1 Worker
     
-    ![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%209.png)
+    ![Untitled](image/Untitled%209.png)
     
 
 Berdasarkan testing menggunakan worker yang berbeda, dapat disimpulkan dalam grafik di bawah ini : 
 
-![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%2010.png)
+![Untitled](image/Untitled%2010.png)
 
 ## Soal 10
 
@@ -693,15 +693,15 @@ Selanjutnya coba tambahkan konfigurasi autentikasi di LB dengan dengan kombinasi
 
 ### Testing
 
-![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%206.jpeg)
+![Untitled](image/Untitled%206.jpeg)
 
 Akan ada Alert berupa `Acces without authorization denied` dan diharuskan untuk memasukan username dan password agar dapat mengakses  `www.granz.channel.it20.com`
 
-![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%207.jpeg)
+![Untitled](image/Untitled%207.jpeg)
 
-![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%208.jpeg)
+![Untitled](image/Untitled%208.jpeg)
 
-![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%209.jpeg)
+![Untitled](image/Untitled%209.jpeg)
 
 ## Soal 11
 
@@ -730,7 +730,7 @@ Kita coba untuk mengakses pada endpoint yang mengandung `/its` yang nantinya a
 lynx www.granz.channel.it20.com/its
 ```
 
-![Untitled](image%2067083ca4eaf34bcf9d7b0a662594c1e4/Untitled%2010.jpeg)
+![Untitled](image/Untitled%2010.jpeg)
 
 ## Soal 12
 
@@ -771,8 +771,6 @@ Selanjutnya LB ini hanya boleh diakses oleh client dengan IP [Prefix IP].3.69, [
         
 
 ### Testing
-
-
 ## Soal 13
 
 #### Karena para petualang kehabisan uang, mereka kembali bekerja untuk mengatur riegel.canyon.yyy.com.
